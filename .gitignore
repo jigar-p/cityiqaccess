@@ -125,3 +125,4 @@ dmypy.json
 # Others
 **/.idea/workspace.xml
 **/.idea/tasks.xml
+.idea/
