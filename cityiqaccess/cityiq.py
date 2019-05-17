@@ -1,10 +1,10 @@
-import constants
-from parking import Parking
+from cityiqaccess import constants
+from cityiqaccess import parking
 import requests
 import os
 from dotenv import load_dotenv
 import base64
-from environmental import Env
+from cityiqaccess import environmental
 
 
 class CityIQ:
@@ -14,8 +14,8 @@ class CityIQ:
             self.token = token
         else:
             self.token = self.collect_token()
-        self.parking = Parking(self.token)
-        self.env = Env(self.token)
+        self.parking = parking.Parking(self.token)
+        self.env = environmental.Env(self.token)
 
     def collect_token(self):
         """
@@ -39,7 +39,7 @@ class CityIQ:
         return self.token
 
     def set_token(self, new_token):
-        self._token = new_token
+        self.token = new_token
 
     ##################### PARKING #####################
 

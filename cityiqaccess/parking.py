@@ -1,4 +1,4 @@
-import constants
+from cityiqaccess import constants
 import requests
 
 
