@@ -1,12 +1,12 @@
-from cityiq import CityIQ
-import constants
+from cityiqaccess import cityiq
+from cityiqaccess import constants
 import time
 import unittest
 
 class TestParking(unittest.TestCase):
 
     def setUp(self):
-        self.city = CityIQ()
+        self.city = cityiq.CityIQ()
         self.start_time = 1548867600000
         self.end_time = 1548871200000
 
