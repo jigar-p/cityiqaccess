@@ -5,6 +5,9 @@ import os
 from dotenv import load_dotenv
 import base64
 from cityiqaccess import environmental
+from gmplot import *
+from colour import Color
+import math
 
 
 class CityIQ:
@@ -257,4 +260,45 @@ class CityIQ:
 
     ##################### MAPPING #####################
     # TODO
+    def _get_color(self, value):
+        """
+        Returns a hex color based on the value of the temperature.
+        :param value: the temperature value
+        :return: hex
+        """
 
+        blue = Color("#37e8ca")
+        colors = list(blue.range_to(Color("#9b1717"), 11)) #color gradient
+
+        # create a color gradient based on temperature
+        index = math.ceil((85-int(value))/5)
+        index = 11 - index
+
+        #returns hex value
+        if (value > 85):
+            index = 10
+        #print(value, index)
+        return colors[index].hex
+
+
+    def gradient_temp(self, temp_data, temp_coords, filename):
+        if(len(temp_data) == 0):
+            print("No data found.")
+            return
+        all_coord = []
+        for i in temp_coords:
+            test = i.split(":")
+            all_coord.append((float(test[0]), float(test[1])))
+
+        lat, log = zip(*all_coord)
+        print(f'Found {len(lat)} total')
+
+
+        gmap = gmplot.GoogleMapPlotter(32.713227, -117.163201, 16.3)  # starting zoom
+        gmap.apikey = os.getenv("google_api_key")
+
+        for i in range(len(lat)):
+            gmap.scatter([lat[i]],[log[i]],self._get_color(temp_data[i]),size=20, marker=False)
+
+        gmap.draw(f"{filename}.html")
+        print(f"Published to {filename}.html")
